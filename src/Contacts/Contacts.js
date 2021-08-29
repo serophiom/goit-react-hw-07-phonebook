@@ -1,17 +1,15 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from '../redux/contacts-actions';
+import { deleteContact, fetchContacts } from '../redux/contacts-operations';
+import { getContacts, getShowContacts } from '../redux/contacts-selectors'
 import './Contacts.css';
 
 const Contacts = () => {
-    const contacts = useSelector(state => state.contacts.items);
+    const contacts = useSelector(getContacts);
+    const showContacts = useSelector(getShowContacts);
     const dispatch = useDispatch();
-    const filter = useSelector(state => state.contacts.filter);
-
-    const toLowerCase = filter.toLowerCase();
-    const showContacts = contacts.filter(contact =>
-         contact.name.toLowerCase().includes(toLowerCase)
-    );
+    
+    useEffect(() => dispatch(fetchContacts()), [dispatch]);
 
     const onDeleteContact = (contactId) => {
         dispatch(deleteContact(contactId))

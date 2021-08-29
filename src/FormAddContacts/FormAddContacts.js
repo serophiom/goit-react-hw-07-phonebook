@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from '../redux/contacts-actions';
+import { addContact } from '../redux/contacts-operations';
+import { getContacts } from 'redux/contacts-selectors';
 import './FormAddContacts.css';
 
-export default function FormAddContacts({ onSubmit }) {
+export default function FormAddContacts() {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
 
-    const contacts = useSelector(state => state.contacts.items);
+    const contacts = useSelector(getContacts);
     const dispatch = useDispatch();
 
     const formSubmitHandler = ( name, number ) => {
@@ -17,7 +18,7 @@ export default function FormAddContacts({ onSubmit }) {
             return;
         }
 
-        dispatch(addContact({ name, number }));
+        dispatch(addContact( name, number ));
     };
 
     const handleChange = event => {
